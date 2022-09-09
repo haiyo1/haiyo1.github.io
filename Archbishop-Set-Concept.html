@@ -1,0 +1,2174 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>haiyo - archbishop-set</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="https://cdn.discordapp.com/icons/561342931986808833/d3d898aa003951dd2d34e0001f902eac.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">haiyo</div>
+        <div class="preamble__entry">Raids 3 / archbishop-set</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/176429696781647873/e42322b761c6243e415bc3c10f3c8a12.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Hai Yo#0119" data-user-id="176429696781647873" style="color: rgb(218,27,27)">...!</span>
+
+
+        <span class="chatlog__timestamp">17-Mar-21 08:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="821825508840964098" id="message-821825508840964098">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821825509147017226/archbishops_label.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821825509147017226/archbishops_label.png" alt="Image attachment" title="Image: archbishops_label.png (4.93 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821825524279410699" id="message-821825524279410699">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821825524410089492/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821825524410089492/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821825555703791626" id="message-821825555703791626">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Another loose adaptation of RotMG items. I had a lot of fun making these because I wanted to make a glass cannon mage build that could rival BiS melee/range in some places.
+It&#39;s hard to balance that because we&#39;re used to &quot;click boss deal dps&quot; and look at nothing but the numbers. I wanted these items have a bit more versatility to it. 
+Some of these items are very strong on paper, but I&#39;ve made an Analysis section describing strategies and uses a bit more in-depth and why they are only powerful if used correctly (hopefully).</span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 09:22 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821825587025936454" id="message-821825587025936454">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821825586875465799/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821825586875465799/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821825601508868116" id="message-821825601508868116">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821825601312522260/overview.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821825601312522260/overview.png" alt="Image attachment" title="Image: overview.png (2.43 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821825708224675922" id="message-821825708224675922">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821825708313673818/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821825708313673818/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821825846591094815" id="message-821825846591094815">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821825846498033664/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821825846498033664/unknown.png" alt="Image attachment" title="Image: unknown.png (12.34 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821825871589146675" id="message-821825871589146675">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821825871513387098/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821825871513387098/unknown.png" alt="Image attachment" title="Image: unknown.png (21.64 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821826008528584824" id="message-821826008528584824">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The <strong>Lumiaire</strong> is a divine staff requiring <strong>Level 90 Magic</strong> to wield.
+
+Similarly to powered staves, the staff has a built-in magic spell that can be used regardless of the spellbook the player is using and cannot be used to autocast any other combat spells.
+
+Unlike powered staves, however, the built-in spell&#39;s max hit does <strong>not</strong> scale off Magic level. The player&#39;s Magic level only affects the accuracy of the spell.
+
+When a player attacks with the staff, they will fire an <strong>orb of light</strong> towards the target.
+Orbs of light have a base max hit of <strong>30.</strong>
+
+As the orb of light is fired, an <strong>orb of chaos</strong> forms above the player&#39;s head, on the tile the player is standing on.
+On the <strong>third tick</strong> after attacking with the staff, the orb of chaos is fired in the direction (cardinal or diagonal) which is the player is facing <strong>on that tick.</strong>
+
+The orb of chaos is a 1x1 AoE projectile which will land on the staff&#39;s maximum range tile from its position, in the direction which it was sent. The AoE has a maximum cap of 1 NPC.
+Orbs of chaos have a base max hit of <strong>36</strong>, and have <strong>100% accuracy.</strong>
+
+Note that the two orbs roll damage completely independently from eachother.
+Magic damage boosting equipment will increase the max hit of both orbs.
+Orbs of chaos are considered separate spells to orbs of light.
+
+The staff has unique attack style properties which allow the maximum range to change significantly.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821826084756127855" id="message-821826084756127855">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821826084609851490/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821826084609851490/unknown.png" alt="Image attachment" title="Image: unknown.png (14.76 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821826157451280495" id="message-821826157451280495">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The spell gives no base experience and grants the player 2 Magic experience per damage dealt with orbs of light.
+Orbs of chaos do not provide experience at all.
+
+The Lumiaire must be charged with cosmic and wrath runes in order to use its spell.
+Each cast will consume 3 cosmic and 3 wrath runes, costing 1,596 gp per cast (current G.E. value).
+Note that only the initial cast (orb of light) will consume a charge, the orb of chaos does not require additional runes. 
+The staff is capable of holding up to 20,000 charges.
+
+The Lumiaire is an item aligned with <em>Saradomin</em> in the God Wars Dungeon.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821826197620260914" id="message-821826197620260914">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821826197419458600/osrs_lumiaire.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821826197419458600/osrs_lumiaire.png" alt="Image attachment" title="Image: osrs_lumiaire.png (7.37 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821826295813636097" id="message-821826295813636097">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821826295628955699/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821826295628955699/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821826434267873350" id="message-821826434267873350">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821826434128674866/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821826434128674866/unknown.png" alt="Image attachment" title="Image: unknown.png (12.25 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821826460234547210" id="message-821826460234547210">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821826460095873084/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821826460095873084/unknown.png" alt="Image attachment" title="Image: unknown.png (14.86 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821826499325722684" id="message-821826499325722684">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The <strong>Chaotic scripture</strong> is a book worn in the off-hand slot, requiring <strong>Level 85 Prayer</strong> to wield.
+It provides the highest Prayer bonus available for the off-hand slot.
+
+The book can be charged by <strong>successfully</strong> casting spells (this includes the built-in spells of powered and divine staves). It can be charged up to <strong>19</strong> times.
+The book has a right click <em>Check</em> option to confirm how many charges it currently holds.
+
+When fully charged, the next successful spellcast will automatically summon a <strong>beam of chaos</strong> upon the targeted enemy.
+The beam of chaos deals <strong>30% of your current Prayer level</strong> in damage (rounded down), and <strong>drains your prayer points</strong> for the same amount.
+The beam will always drain a minimum of 3 prayer points.
+Although there is no minimum damage threshhold, the beam does <strong>not</strong> activate if it would deal 0 damage (which happens when the player has 0-3 prayer points).
+
+Note that the spellcast which summons the beam does <strong>not</strong> generate a charge.
+The book will return to 0 charges upon casting the beam.
+
+The Chaotic scripture is an item aligned with <em>Zamorak</em> in the God Wars Dungeon.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821826522012581909" id="message-821826522012581909">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821826522200408074/osrs_scripture.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821826522200408074/osrs_scripture.png" alt="Image attachment" title="Image: osrs_scripture.png (19.58 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821826539842830396" id="message-821826539842830396">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821826539724210186/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821826539724210186/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821827283475890238" id="message-821827283475890238">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821827283529891921/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821827283529891921/unknown.png" alt="Image attachment" title="Image: unknown.png (11.16 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821827310638333953" id="message-821827310638333953">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821827310671626331/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821827310671626331/unknown.png" alt="Image attachment" title="Image: unknown.png (14.49 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821827629774405684" id="message-821827629774405684">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The <strong>Divine coronation</strong> is a crown worn in the head slot, requiring <strong>Level 85 Prayer</strong> to wield.
+It provides the highest Prayer bonus available for the head slot.
+
+The crown provides a passive effect when worn. While using overhead prayers, the player gains <strong>5 accuracy followed by +5% damage and accuracy</strong> with the style they are praying against.
+
+<div class="quote"><strong>Protect from Magic:</strong> +5 Magic accuracy, +5% Magic damage and accuracy
+<strong>Protect from Missiles:</strong> +5 Ranged accuracy, +5% Ranged damage and accuracy
+<strong>Protect from Melee:</strong> +5 Stab, Slash and Crush accuracy, +5% Melee damage and accuracy
+</div>
+The Divine coronation is an item aligned with <em>Saradomin</em> in the God Wars Dungeon.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821828009311993856" id="message-821828009311993856">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821828009174368336/osrs_coronation.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821828009174368336/osrs_coronation.png" alt="Image attachment" title="Image: osrs_coronation.png (13 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821828183401693254" id="message-821828183401693254">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821828183274946610/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821828183274946610/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821828742686179368" id="message-821828742686179368">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821828742544228402/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821828742544228402/unknown.png" alt="Image attachment" title="Image: unknown.png (13.36 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821828760201986078" id="message-821828760201986078">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821828760055709696/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821828760055709696/unknown.png" alt="Image attachment" title="Image: unknown.png (16.05 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821828905903587358" id="message-821828905903587358">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The <strong>Vesture of duality</strong> is the top part of the Archbishop robes set. It requires <strong>Level 85 Magic</strong> and <strong>Level 65 Defence</strong> to wield.
+
+When worn, the robe top provides a negative passive effect: the player is subject to <strong>11% damage amplification</strong> (rounded down).</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821829080147165184" id="message-821829080147165184">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821829079967334490/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821829079967334490/unknown.png" alt="Image attachment" title="Image: unknown.png (13.21 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821829103140470814" id="message-821829103140470814">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821829102981218314/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821829102981218314/unknown.png" alt="Image attachment" title="Image: unknown.png (15.99 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821829182103093258" id="message-821829182103093258">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The <strong>Greatskirt of discord</strong> is the bottom part of the Archbishop robes set. It requires <strong>Level 85 Magic</strong> and <strong>Level 65 Defence</strong> to wield.
+
+When worn, the robe bottoms provide a negative passive effect: the player is subject to <strong>11% damage amplification</strong> (rounded down).</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821829424055713883" id="message-821829424055713883">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821829423904063508/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821829423904063508/unknown.png" alt="Image attachment" title="Image: unknown.png (12.53 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821829493382971403" id="message-821829493382971403">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821829493466333184/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821829493466333184/unknown.png" alt="Image attachment" title="Image: unknown.png (15.51 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821829536739360828" id="message-821829536739360828">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The <strong>Boots of conflict</strong> are the footwear of the Archbishop robes set. They require <strong>Level 85 Magic</strong> and <strong>Level 65 Defence</strong> to wield.
+
+When worn, the boots provide a negative passive effect: the player is subject to <strong>8% damage amplification</strong> (rounded down).</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821829592846565457" id="message-821829592846565457">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821829592872517642/archbishop_set.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821829592872517642/archbishop_set.png" alt="Image attachment" title="Image: archbishop_set.png (71.2 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821829726398185503" id="message-821829726398185503">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Overview of the total stats of the robe set.</em>
+
+
+<strong>Damage amplification:</strong> All damage dealt to the player is increased by a percentage.
+
+When the full set of Archbishop robes (top, bottom and boots) is equipped, the player suffers a total of <strong>30%</strong> damage amplification.
+
+This is calculated separate to any other effects that may affect damage taken (such as reduction and recoil). Damage amplification applies only to the original damage value dealt to the player.
+Any amount of amplification results in a minimum of +1 damage taken from attacks that deal 1 damage or higher.
+
+Each piece of the Archbishop robes set is aligned with both <em>Saradomin</em> and <em>Zamorak</em> in the God Wars Dungeon.</span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 08:38 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821829978713751594" id="message-821829978713751594">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821829978521206794/archbishop_model.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821829978521206794/archbishop_model.png" alt="Image attachment" title="Image: archbishop_model.png (82.21 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821831716943429702" id="message-821831716943429702">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821831716778934323/wdr_line_red.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821831716778934323/wdr_line_red.jpg" alt="Image attachment" title="Image: wdr_line_red.jpg (1.78 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821831729336811571" id="message-821831729336811571">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821831729081483304/analysis.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821831729081483304/analysis.png" alt="Image attachment" title="Image: analysis.png (3.18 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821831747922034720" id="message-821831747922034720">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821831747809443891/wdr_line_red.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821831747809443891/wdr_line_red.jpg" alt="Image attachment" title="Image: wdr_line_red.jpg (1.78 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821831964943187968" id="message-821831964943187968">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821831964818145311/osrs_lumiaire.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821831964818145311/osrs_lumiaire.png" alt="Image attachment" title="Image: osrs_lumiaire.png (7.37 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821831971076440104" id="message-821831971076440104">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Let&#39;s start with the Lumiaire - it has an attack pattern unlike any weapon in OSRS.
+It hits like a truck and out-dpses any mage weapon if you&#39;re able to able to land all the orbs of chaos.
+
+This tilemap indicates the possible tiles on which an orb can land, with the center green tile representing the player&#39;s position.</span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 08:46 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821832282909966386" id="message-821832282909966386">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821832282775486515/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821832282775486515/unknown.png" alt="Image attachment" title="Image: unknown.png (13.8 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821832530629361715" id="message-821832530629361715">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The red, orange and yellow tiles can only be reached using the volatile, accurate and longrange attack styles respectively.</em>
+
+This means that at all times the player has to be aware of where they&#39;re standing, because that&#39;s where the orb of chaos will spawn when they attack. If the orb does not meet with the tile of the enemy you&#39;re looking to hit, your dps goes down the drain.
+
+<strong>You absolutely have to hit your chaos orbs.</strong> This is what happens when you don&#39;t.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821832621171671090" id="message-821832621171671090">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821832621004423168/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821832621004423168/unknown.png" alt="Image attachment" title="Image: unknown.png (1.33 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821832637848223744" id="message-821832637848223744">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821832637672456222/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821832637672456222/unknown.png" alt="Image attachment" title="Image: unknown.png (43.47 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821832838852116551" id="message-821832838852116551">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">When hitting all the orbs, it is without question the best mage DPS weapon.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821832880858071050" id="message-821832880858071050">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821832880673390642/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821832880673390642/unknown.png" alt="Image attachment" title="Image: unknown.png (106.56 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821833013549072388" id="message-821833013549072388">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The DPS increase may sound absurd, but any mistakes made using this weapon are brutally punishing to your DPS.
+
+Whereas missing a tick with a trident/sang makes you lose 1/4th of your dps, missing a <em>single</em> chaos orb with Lumi results in a stunning dps loss of over half your original value.
+
+NPCs that have a higher size than 1x1 can only be affected by AoE (Retribution, chins, barrages, etc.) on their <strong>southwest tile.</strong> Lumiaire is no different - it cannot be coded otherwise. This makes it for some very interesting situations.
+
+Here&#39;s what running the head at Olm with Lumi looks like:</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821833114510426172" id="message-821833114510426172">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <video controls class="chatlog__attachment-thumbnail">
+                                        <source src="https://cdn.discordapp.com/attachments/821820773948719154/821833114270695484/Screen_846.mp4" alt="Video attachment" title="Video: Screen_846.mp4 (395.76 KB)">
+                                    </video>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821833442454142996" id="message-821833442454142996">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote"><img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> Blue tiles indicate possible positions you have to stand on.
+<img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> Green tile is the position of the player.
+<img class="emoji " alt="goldenball" title="goldenball" src="https://cdn.discordapp.com/emojis/814972652745130054.png"> Yellow tiles indicate traditional running tiles.
+<img class="emoji " alt="goldenball" title="goldenball" src="https://cdn.discordapp.com/emojis/814972652745130054.png"> Yellow sword = tick on which the player attacks
+<img class="emoji " alt="purpleball" title="purpleball" src="https://cdn.discordapp.com/emojis/814914261771223041.png"> Purple arrow = tick on which the orb of chaos is fired, and direction which the player is facing
+</div>
+Attacks on the far south side will require the player to switch attack styles to Accurate, then back to Volatile when going back north.
+
+Keep in mind this is when olm is towards the <strong>east</strong> side. 
+<strong>West</strong> side Olm has a completely different strategy because its southwest tile is... here.</span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 08:52 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821833537635614730" id="message-821833537635614730">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821833537443463299/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821833537443463299/unknown.png" alt="Image attachment" title="Image: unknown.png (77.38 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821833655814324224" id="message-821833655814324224">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Because of the orb of chaos&#39; unique ability to be 100% accurate, there are also places where max mage could bring about new metas.
+
+<strong>P2 Verzik</strong> cannot have her defence level reduced, and has low slash defence, naturally making scythe (and other slash weapons) most effective against her.
+
+Because of the high defence level however, max melee cannot reach its full dps potential. This is where Lumiaire shines.
+
+<img class="emoji " alt="⚔" title="⚔" src="https://twemoji.maxcdn.com/2/72x72/2694.png">️ <strong>15/16 Scythe DPS</strong> and <strong>Colo Sword + Scythe cycle DPS</strong> (see <span class="mention">#mbc-drop-table</span> for colo sword specifications):</span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 09:28 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821833692351561758" id="message-821833692351561758">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821833692136996864/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821833692136996864/unknown.png" alt="Image attachment" title="Image: unknown.png (13.83 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821833954550087771" id="message-821833954550087771">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="⚔" title="⚔" src="https://twemoji.maxcdn.com/2/72x72/2694.png">️ <strong>DPS with Lumiaire in complete max mage (archbishop set):</strong></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821833973977579621" id="message-821833973977579621">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821833973776646144/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821833973776646144/unknown.png" alt="Image attachment" title="Image: unknown.png (759 bytes)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821834137051987999" id="message-821834137051987999">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">If you have a colo sword, it would likely not be worth using lumi for verzik since this is with absolute max mage, including heart and even a seers ring (if you remove it, the dps becomes worse than colo + scythe cycle)
+
+However, even without imbued heart and a ring switch, Lumi with max mage still beats the current 15/16 scythe cycle by 0.3 DPS.
+
+This is what maging P2 Verzik with Lumi looks like:</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821834196582400010" id="message-821834196582400010">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <video controls class="chatlog__attachment-thumbnail">
+                                        <source src="https://cdn.discordapp.com/attachments/821820773948719154/821834196338606120/Screen_845.mp4" alt="Video attachment" title="Video: Screen_845.mp4 (160.4 KB)">
+                                    </video>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821834401758445588" id="message-821834401758445588">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote"><img class="emoji " alt="goldenball" title="goldenball" src="https://cdn.discordapp.com/emojis/814972652745130054.png"> Yellow X indicates Verzik&#39;s attack tick.
+<img class="emoji " alt="redball" title="redball" src="https://cdn.discordapp.com/emojis/814914303722651670.png"> Red X (one tick later) indicates where the ranged bomb falls.
+</div>
+You might not only use it for Verzik either:</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821834823911866398" id="message-821834823911866398">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821834823638319134/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821834823638319134/unknown.png" alt="Image attachment" title="Image: unknown.png (145.25 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821834973774217327" id="message-821834973774217327">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Lumiaire with New Max Mage:</strong></span>
+
+                        </div>
+                    </div>
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821834973639213086/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821834973639213086/unknown.png" alt="Image attachment" title="Image: unknown.png (1.36 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821835263084855317" id="message-821835263084855317">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>DPS comparison of max melee vs. new max mage on 1 DWH Sotetseg</em>
+
+At 2 DWH on Sotetseg, melee becomes better, so it probably would not be worth using in 4-5 mans.
+But as mage accuracy is not based off defence level, its DPS remains unaffected at 0 and 1 DWH, making it substantially better than meleeing.
+
+<strong>Lumi remains outclassed by melee where defence levels are low or zero.</strong>
+The same can be said for ranging against low defence targets (bp ddarts), or against targets with higher magic levels (tbow)
+
+Other places it would be strong at include:</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821835404339576842" id="message-821835404339576842">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">- Anywhere where you stand still, and the target stands still
+<div class="quote">Kraken
+Thermy
+Rex (after setting up)
+Scorpia (if you have the balls)
+Far side mage tanking Olm
+Mimic?
+Kalphite queen P2
+</div>- Nightmare, provided you can dodge her attacks and get back into position quickly
+- Zulrah, but requires a bit of extra effort for positioning yourself.
+
+And I&#39;m sure there are other spots but I didn&#39;t calc all of them.
+
+--
+
+This item was by far the hardest to balance so far and there were several iterations to get to where it&#39;s at now.
+
+1. The staff was originally two-handed
+2. Orbs originally had a max hit of 36 and 42
+3. They were then nerfed to 32 and 38
+4. They were nerfed <em>again</em> to 30 and 36 (current)
+5. They were buffed to 32 and 36
+6. The staff was made one-handed because of the chaotic scripture
+7. Orbs were once again nerfed, to 28 and 32
+8. They were buffed to 30 and 32
+9. Then 30 and 34, 30 and 35, and finally 30 and 36 again
+
+Furthermore, figuring out how directional mechanics were quite the challenge.
+Although the 8 main directions are easy to work with, your character is capable of facing a lot more different directions by interacting with an object or NPC at an irregular ratio of tiles away.
+For example, casting telekinetic grab on an item that&#39;s 3 tiles east and 1 tile south of you will cause your character to turn at a slight southeast angle, although closer to east than southeast.
+There are <em>hundreds</em> of different angles you can get like this.
+
+Fortunately with some Jmod confirmation on a currently existing direction-based mechanic (The Jormungand&#39;s gaze attack), I learned that only the 8 main directions exist server-side.
+All the angles your character can face are client-side and probably has some form of rounding involved (most likely rounding down to the nearest integer) which causes it to be determined as 1 of the 8 main directions.
+
+<strong>TL;DR Directional mechanics:</strong> it&#39;s possible, it&#39;s in the game, lumi would work the same way</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821835584758611969" id="message-821835584758611969">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821835584892305428/wdr_line_red.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821835584892305428/wdr_line_red.jpg" alt="Image attachment" title="Image: wdr_line_red.jpg (1.78 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821835723367120946" id="message-821835723367120946">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821835723191222282/osrs_scripture.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821835723191222282/osrs_scripture.png" alt="Image attachment" title="Image: osrs_scripture.png (19.58 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821835965676519445" id="message-821835965676519445">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">This one was also interesting to balance out.
+It had the same issue as siren&#39;s tome where it was almost a direct upgrade to arcane, and there were very few places where arcane would remain relevant.
+I&#39;m a bit biased though because I voted yes on the tome, on account of the fact that a 7 year old already niche item that gives 0.3 mage DPS (or &lt;0.05 against targets with no magic defence) shouldn&#39;t remain BiS forever.
+
+Nevertheless, I didn&#39;t want it to be a direct upgrade to arcane either.
+Because cscript requires successful hits in order to charge up, and provides no dps bonuses whatsoever, it is technically worse dps than an arcane <em>until</em> you hit your first beam (note that you could charge it up beforehand if you want to be sweaty).
+
+It is especially strong against low magic defence targets, and becomes significantly weaker against enemies with higher magic defence. 
+
+Some example DPS values with <strong>sang + script</strong> VS <strong>sang + arcane:</strong></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821836163799187506" id="message-821836163799187506">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821836163575971860/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821836163575971860/unknown.png" alt="Image attachment" title="Image: unknown.png (86.65 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821836340093911040" id="message-821836340093911040">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>VS</strong> Solo CM Mage Hand (lvl 130 Magic, 50 Magic defence)
+
+This assumes all chaos beams are cast at 99 Prayer.
+
+The scripture becomes less effective dps than an arcane when the beams are cast at <strong>39 Prayer</strong> or below.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821836366403862580" id="message-821836366403862580">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821836366215643227/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821836366215643227/unknown.png" alt="Image attachment" title="Image: unknown.png (85.79 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821836439061921847" id="message-821836439061921847">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>VS</strong> Bandos (lvl 80 Magic, 298 Magic defence)
+
+Arcane always beats scripture, even at 99 Prayer.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821836939257708564" id="message-821836939257708564">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821836939095048212/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821836939095048212/unknown.png" alt="Image attachment" title="Image: unknown.png (85.29 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821837074277728288" id="message-821837074277728288">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>VS</strong> Kraken (lvl 2 Magic, 130 Magic defence)
+
+Scripture always beats arcane, unless you are not casting beams (3 Prayer or below).
+
+--
+
+The scripture&#39;s side effect of draining your own prayer (especially by large amounts if you plan on dealing max dps) can also be undesirable at places like Inferno or Slayer tasks that you want to stay at for as long as possible.
+
+However, the true power of this offhand shines when paired with Lumiaire.
+Because orbs of chaos are classified as spells, you are essentially using a 3-tick mage weapon if you are hitting every single one. 
+In addition, the orbs of chaos are 100% accurate, and the scripture only requires successful hits to be charged. This makes it a powerhouse against both low and high magic defence targets when casting beams at high prayer points.</span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 09:07 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821837320868986900" id="message-821837320868986900">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821837320675131423/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821837320675131423/unknown.png" alt="Image attachment" title="Image: unknown.png (86.77 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821837499781218374" id="message-821837499781218374">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821837499621179422/wdr_line_red.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821837499621179422/wdr_line_red.jpg" alt="Image attachment" title="Image: wdr_line_red.jpg (1.78 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821837522077614120" id="message-821837522077614120">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821837521964892200/osrs_coronation.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821837521964892200/osrs_coronation.png" alt="Image attachment" title="Image: osrs_coronation.png (13 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821837708682985492" id="message-821837708682985492">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">A budget slayer helm if used correctly - it&#39;s BiS offensive with all attack styles in almost all situations where a slayer task is not involved.
+
+It&#39;s worth clarifying that the +5 accuracy bonus is applied before the percentage damage and accuracy increase, as it cancels out the base negatives of the helm. 
+The negatives are only there in the first place to ensure that it is used as intended, and to punish players who fail to use it correctly.
+I imagine a lot of players will try to get the most of the helm by flicking prayers on attack ticks (assuming they have to pray against another style), but if they fail to do so they will not only lose out on the bonuses they would&#39;ve gotten with other helms, but even hinder their own DPS with lower accuracy.
+
+It also provides no defensive bonuses at all, which isn&#39;t the biggest deal but could be notable in some places.
+
+<strong>Examples of DPS comparisons:</strong>
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> <strong>Max melee (Bandos) VS Maiden, Full Defence:</strong></span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 09:14 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821837970419220511" id="message-821837970419220511">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote"><img class="emoji " alt="Protect_from_Melee" title="Protect_from_Melee" src="https://cdn.discordapp.com/emojis/564806044186836992.png"> Praying melee: 0.1 DPS gain
+Not praying melee: 0.59 DPS loss</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821838164985511937" id="message-821838164985511937">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png">  <strong>Max melee (Bandos) VS Maiden, 0 Defence:</strong>
+<div class="quote"><img class="emoji " alt="Protect_from_Melee" title="Protect_from_Melee" src="https://cdn.discordapp.com/emojis/564806044186836992.png"> Praying melee: 0.004 DPS gain (lol)
+Not praying melee: 0.66 DPS loss</div></span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 09:14 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821838477939048519" id="message-821838477939048519">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> <strong>Max range BP (Arma) VS Blue Zulrah:</strong>
+<div class="quote"><img class="emoji " alt="Protect_from_Missiles" title="Protect_from_Missiles" src="https://cdn.discordapp.com/emojis/564806054345572363.png"> Praying range: 0.33 DPS gain
+Not praying range: 0.2 DPS loss</div></span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 09:13 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821838740698955806" id="message-821838740698955806">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> <strong>Max range Tbow (Arma) VS Dagannoth Prime:</strong>
+<div class="quote"><img class="emoji " alt="Protect_from_Missiles" title="Protect_from_Missiles" src="https://cdn.discordapp.com/emojis/564806054345572363.png"> Praying range: 0.29 DPS gain
+Not praying range: 0.15 DPS loss</div></span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 09:14 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821839099820376084" id="message-821839099820376084">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> <strong>Old max mage Sang VS Olm Mage Hand:</strong>
+<div class="quote"><img class="emoji " alt="Protect_from_Magic" title="Protect_from_Magic" src="https://cdn.discordapp.com/emojis/564806030265942047.png"> Praying mage: 0.38 DPS gain
+Not praying mage: 0.08 DPS loss</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821839281793925171" id="message-821839281793925171">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> <strong>New max mage Lumi VS Olm Mage Hand:</strong>
+<div class="quote"><img class="emoji " alt="Protect_from_Magic" title="Protect_from_Magic" src="https://cdn.discordapp.com/emojis/564806030265942047.png"> Praying mage: 0.27 DPS gain
+Not praying mage: 0.17 DPS loss</div></span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 09:16 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821839398600835083" id="message-821839398600835083">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821839398815531008/wdr_line_red.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821839398815531008/wdr_line_red.jpg" alt="Image attachment" title="Image: wdr_line_red.jpg (1.78 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821839541572861952" id="message-821839541572861952">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821839541391458335/archbishop_model.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821839541391458335/archbishop_model.png" alt="Image attachment" title="Image: archbishop_model.png (71.98 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821839552985300992" id="message-821839552985300992">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">A considerable DPS increase over ancestral, at the cost of taking significantly more damage everywhere.
+
+There isn&#39;t a lot to say about this one but it&#39;s worth clarifying that damage amplification is calculated separate to any other effects that affect damage dealt to you, such as damage reduction and recoil. It is then added to the total value afterwards.
+
+<u>For example:</u>
+- An NPC deals 50 base damage to the player, wearing a dinh&#39;s bulwark (20% damage reduction). The calculated reduction is <strong>10 damage.</strong>
+- The player is also wearing a full set of archbishop robes (30% damage amplification). Since the base damage is 50, the calculated amplification is <strong>15 damage.</strong>
+- This is added <strong>after</strong> the reduction, meaning the player takes <strong>55 damage</strong> (50 - 10 + 15).
+
+<u>or:</u>
+- An NPC deals 50 damage to the player using Vengeance (75% damage recoil). The calculated damage is <strong>37.</strong>
+- Once again, the amplification is calculated from the base damage, so it will be an additional <strong>15 damage.</strong>
+- This is added <strong>after</strong> the recoil calculation, meaning the player will venge the same 37 damage, but take 65 damage.
+
+While it would be cool if you could use these robes for extra-large venges, it would undermine the New life armour set (see <span class="mention">#mbc-drop-table</span>) and overall makes the robes too strong.
+
+Note that unlike damage reduction, damage amplification affects <strong>all</strong> sources of damage, including poison/venom hitsplats, AoE attacks and other miscellaneous attacks.
+
+For example:
+- Olm&#39;s crystal bombs would deal 78/58/39/19 damage.
+- Zulrah&#39;s venom clouds would deal 2/3/4/5 damage.
+- If you start a solo Vasa and do not heal up, you will die.</span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 09:17 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821839743834521650" id="message-821839743834521650">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821839743692177498/wdr_line_red.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821839743692177498/wdr_line_red.jpg" alt="Image attachment" title="Image: wdr_line_red.jpg (1.78 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821839804295282698" id="message-821839804295282698">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Overall, the set sacrifices survivability, prayer, and even mobility (requiring the player to know exactly how to use the weapon) in exchange for unrivaled mage DPS.
+Mage DPS has always been the lowest of the three combat styles and it makes sense, as Magic is meant to be the utility combat skill and provides many benefits that the other two don&#39;t. But still I thought it&#39;d be fun to have a pure glass cannon mage build that can blow everything up with practice and mastery, just as easily as the player can be blown up themselves.
+
+Thanks to <span class="mention" title="JasonT20015#0269">@73 joycowboy</span> for math and calcs help, <span class="mention" title="DocYen#0451">@DocYen</span> for balancing advice and discussions, and <span class="mention" title="Okke#2255">@hai yo fan</span> for strategy theorycrafting <img class="emoji " alt="haiyorIQ" title="haiyorIQ" src="https://cdn.discordapp.com/emojis/671445015695851554.png"></span>
+
+                                <span class="chatlog__edited-timestamp" title="17-Mar-21 09:35 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821839822448099360" id="message-821839822448099360">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821839822690975774/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821839822690975774/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821839854710685747" id="message-821839854710685747">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/821820773948719154/821839854538850307/scroll_to_the_top_2.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/821820773948719154/821839854538850307/scroll_to_the_top_2.png" alt="Image attachment" title="Image: scroll_to_the_top_2.png (4.05 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="821839917369524274" id="message-821839917369524274">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>LINK:</strong> <a href="https://discord.com/channels/561342931986808833/821820773948719154/821825508840964098" onclick="scrollToMessage(event, '821825508840964098')">https://discord.com/channels/561342931986808833/821820773948719154/821825508840964098</a></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/176429696781647873/e42322b761c6243e415bc3c10f3c8a12.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Hai Yo#0119" data-user-id="176429696781647873" style="color: rgb(218,27,27)">...!</span>
+
+
+        <span class="chatlog__timestamp">17-Mar-21 09:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="821844611269525545" id="message-821844611269525545">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention">@everyone</span></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="wowhai" title="wowhai" src="https://cdn.discordapp.com/emojis/569320359170670592.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="Ping" title="Ping" src="https://cdn.discordapp.com/emojis/662464910390722570.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="FeelsMeouhou" title="FeelsMeouhou" src="https://cdn.discordapp.com/emojis/598723277065814016.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="pingsock" title="pingsock" src="https://cdn.discordapp.com/emojis/589601790908039179.gif">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="rotmeowg" title="rotmeowg" src="https://cdn.discordapp.com/emojis/796834407947829328.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 89 message(s)</div>
+</div>
+
+</body>
+
+</html>

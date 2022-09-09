@@ -1,0 +1,1522 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>haiyo - hardmode-bloat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="https://cdn.discordapp.com/icons/561342931986808833/d3d898aa003951dd2d34e0001f902eac.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">haiyo</div>
+        <div class="preamble__entry">Raids 3 / hardmode-bloat</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/176429696781647873/e42322b761c6243e415bc3c10f3c8a12.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Hai Yo#0119" data-user-id="176429696781647873" style="color: rgb(218,27,27)">knows phase chains</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 07:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="837746799045115944" id="message-837746799045115944">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837746798935277609/bloat_hm_title.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837746798935277609/bloat_hm_title.png" alt="Image attachment" title="Image: bloat_hm_title.png (2.69 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837746814488150147" id="message-837746814488150147">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837746814345936981/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837746814345936981/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837746832913727498" id="message-837746832913727498">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837746832633364500/butcher.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837746832633364500/butcher.png" alt="Image attachment" title="Image: butcher.png (63.4 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837746847094931506" id="message-837746847094931506">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837746846990336010/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837746846990336010/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837746853851824185" id="message-837746853851824185">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong><u>Pestilent Butcher</u></strong>
+
+Levels:
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> 3,000 <strong>(1.5x normal)</strong>
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> 250 
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> 340 
+<img class="emoji " alt="Defence_icon" title="Defence_icon" src="https://cdn.discordapp.com/emojis/578952175267348480.png"> 100 
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> 150
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> 270 <strong>(1.5x normal)</strong>
+
+Aggressive stats:
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> +150
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> +82
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Magic_Damage_icon" title="Magic_Damage_icon" src="https://cdn.discordapp.com/emojis/814883839892521050.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +180
+<img class="emoji " alt="Ranged_Strength_icon" title="Ranged_Strength_icon" src="https://cdn.discordapp.com/emojis/814883826370215995.png"> +4
+
+Defensive stats:
+
+<img class="emoji " alt="Stab" title="Stab" src="https://cdn.discordapp.com/emojis/814882474651156542.png"> +40
+<img class="emoji " alt="Slash" title="Slash" src="https://cdn.discordapp.com/emojis/814883885674528828.png"> +20
+<img class="emoji " alt="Crush" title="Crush" src="https://cdn.discordapp.com/emojis/814883871639994399.png"> +40
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +600
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +800
+
+<em>Unless stated otherwise, the stats are identical to normal Bloat&#39;s.</em>
+
+<img class="emoji " alt="Poison_hitsplat" title="Poison_hitsplat" src="https://cdn.discordapp.com/emojis/814883807676203048.png"> Immune to poison
+<img class="emoji " alt="Venom_hitsplat" title="Venom_hitsplat" src="https://cdn.discordapp.com/emojis/814883781302419477.png"> Immune to venom</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837746871346266112" id="message-837746871346266112">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837746871241015336/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837746871241015336/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837746904225677384" id="message-837746904225677384">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837746904292524062/dynamenos.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837746904292524062/dynamenos.png" alt="Image attachment" title="Image: dynamenos.png (162.4 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837746959677915136" id="message-837746959677915136">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong><u>Tuznylocas Hagios</u></strong> and <strong><u>Tuznylocas Toxobolos</u></strong>
+
+Size: 1x1
+
+Levels:
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> 11
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> 200
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> 160 
+<img class="emoji " alt="Defence_icon" title="Defence_icon" src="https://cdn.discordapp.com/emojis/578952175267348480.png"> 1 
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> 1
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> 200 
+
+Aggressive stats:
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> +0
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +1073
+<img class="emoji " alt="Magic_Damage_icon" title="Magic_Damage_icon" src="https://cdn.discordapp.com/emojis/814883839892521050.png"> +928
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+<img class="emoji " alt="Ranged_Strength_icon" title="Ranged_Strength_icon" src="https://cdn.discordapp.com/emojis/814883826370215995.png"> -15
+
+Defensive stats:
+
+<img class="emoji " alt="Stab" title="Stab" src="https://cdn.discordapp.com/emojis/814882474651156542.png"> +0
+<img class="emoji " alt="Slash" title="Slash" src="https://cdn.discordapp.com/emojis/814883885674528828.png"> +0
+<img class="emoji " alt="Crush" title="Crush" src="https://cdn.discordapp.com/emojis/814883871639994399.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+
+ <em>The stats are identical to the level 162 (small) Nylocas Hagios and Nylocas Toxobolos.</em>
+
+<img class="emoji " alt="Poison_hitsplat" title="Poison_hitsplat" src="https://cdn.discordapp.com/emojis/814883807676203048.png"> Immune to poison
+<img class="emoji " alt="Venom_hitsplat" title="Venom_hitsplat" src="https://cdn.discordapp.com/emojis/814883781302419477.png"> Immune to venom</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747008634617877" id="message-837747008634617877">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747008701071360/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747008701071360/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747056588226581" id="message-837747056588226581">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747056490971156/basic_attacks.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747056490971156/basic_attacks.png" alt="Image attachment" title="Image: basic_attacks.png (1.17 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747061356363816" id="message-837747061356363816">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The Butcher&#39;s basic ranged attacks (flies) are identical to Bloat&#39;s.
+The only difference is that they deal higher damage: <strong>20-30</strong> (reduced by 50% with Protect from Missiles).
+
+Note that the Ranged level increase is purely visual to indicate this (as Bloat&#39;s Ranged level is not indicative of his damage either).</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747077429461062" id="message-837747077429461062">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747077320671232/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747077320671232/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747089076256791" id="message-837747089076256791">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747088447504404/falling_flesh.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747088447504404/falling_flesh.png" alt="Image attachment" title="Image: falling_flesh.png (4.36 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747130546126878" id="message-837747130546126878">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The falling flesh (hands/feet) attack is nearly identical to Bloat&#39;s:
+<div class="quote">There is a 3-tick indicator shadow before the damage tick.
+They fall in intervals of 6 ticks when the Butcher is <strong>above 40% HP,</strong> and 4 ticks when below.
+They deal 25-50 damage.
+They will stun the player for the same duration.
+Falling flesh stops spawning when the Butcher goes down.
+</div>
+However, there are three notable changes:
+
+<img class="emoji " alt="redball" title="redball" src="https://cdn.discordapp.com/emojis/814914303722651670.png"> There will only be <strong>10-12</strong> spawns per set of falling flesh, rather than 14-16.
+<img class="emoji " alt="redball" title="redball" src="https://cdn.discordapp.com/emojis/814914303722651670.png"> Whenever a player dies, <strong>1</strong> additional spawn is added to each set (making it 10-12 + 1 for each fallen player). <em>A little morbid?</em>
+<img class="emoji " alt="redball" title="redball" src="https://cdn.discordapp.com/emojis/814914303722651670.png"> Every <strong>fourth</strong> set of falling flesh, one of the indicators (at random) is replaced with an orange glowing shadow. This will indicate where a <strong>Tuznylocas</strong> will spawn. A hand/foot does not fall here.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747146185768980" id="message-837747146185768980">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747146069114941/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747146069114941/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747190016376853" id="message-837747190016376853">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747189887139860/cleavers.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747189887139860/cleavers.png" alt="Image attachment" title="Image: cleavers.png (3.79 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747199156289646" id="message-837747199156289646">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">At the end of each of the four corridors in the room, there are <strong>5</strong> gaps in the wall - one for each tile of a corridor.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747220707147867" id="message-837747220707147867">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747220618149968/bloat_thumbnail.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747220618149968/bloat_thumbnail.png" alt="Image attachment" title="Image: bloat_thumbnail.png (305.8 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747266047574057" id="message-837747266047574057">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A visual mockup of the five gaps at the end of a corridor.</em>
+
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> <strong>When the Butcher is below 80% HP,</strong> cleavers will be thrown from <strong>two</strong> of the five gaps (at random) at 6-tick intervals.
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> <strong>When the Butcher is below 40% HP,</strong> it is increased to <strong>three</strong> of the five gaps.
+
+The cleaver is a projectile that travels in a straight line across the corridor, and <strong>cannot</strong> be skipped over (identical to Sepulchre arrows).
+
+Each one deals <strong>15-25 damage</strong> and travels at <strong>3 tiles per tick</strong> speed.
+Because of the speed and intervals of the cleavers, a new set of cleavers will spawn every time a previous set reaches the end of its lifetime.
+
+However, there is a 3-tick indicator where the dangerous gaps will glow a bright red before firing cleavers.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747285319352360" id="message-837747285319352360">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747285118943322/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747285118943322/unknown.png" alt="Image attachment" title="Image: unknown.png (113.46 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747316290093086" id="message-837747316290093086">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A visual mockup of the dangerous gap indicator.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747359412650005" id="message-837747359412650005">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747359269257246/bloat.gif">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747359269257246/bloat.gif" alt="Image attachment" title="Image: bloat.gif (50.94 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747364714250280" id="message-837747364714250280">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The cycles of cleavers (below 40% HP as there are three in each set)</em>
+
+
+Note that unlike falling flesh, cleavers do <strong>not</strong> stop spawning during periods where the Butcher goes down. They are a constant hazard throughout the fight after the 80% HP threshhold is breached.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747378638815272" id="message-837747378638815272">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747378521767946/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747378521767946/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747418249822228" id="message-837747418249822228">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747418132906024/tuznylocas.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747418132906024/tuznylocas.png" alt="Image attachment" title="Image: tuznylocas.png (5.56 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747423710543872" id="message-837747423710543872">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Tuznylocas are explosive variants of their Nylocas counterparts. They are similar to the exploding Nylocas found in Verzik P2, but have some fundamental differences.
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> When the Butcher is below <strong>90% HP,</strong> falling flesh begins to fall from the ceiling (same as Bloat).
+From this point onwards, a single Tuznylocas will spawn on <strong>every fourth set of falling flesh.</strong> It can either be Hagios or Toxobolos, at random.
+<em>(A golden shadow indicator takes the place of the regular grey shadow).</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747468304121886" id="message-837747468304121886">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747468141330472/dynamenos.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747468141330472/dynamenos.png" alt="Image attachment" title="Image: dynamenos.png (162.4 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747474172870688" id="message-837747474172870688">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Tuznylocas Hagios and Tuznylocas Toxobolos, respectively.</em>
+
+
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> <img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png">  Similarly to regular Nylocas, the Hagios variant can only be killed using magic, and the Toxobolos variant can only be killed using ranged.
+However, using an incorrect style against them will cause them to pause for 1 tick before immediately exploding in a 7x7 area.
+
+They will also explode if a player comes within a <strong>2 tile</strong> range of them. Notwithstanding explosions, they do not attack players.
+<em>If they are killed correctly, they do not explode at all.</em>
+
+The explosion itself, similar to the exploding Nylocas at Verzik, deals decreasing damage based on distance further away from them:
+
+<div class="quote">On its tile: <strong>64 damage</strong>
+1 tile away: <strong>48 damage</strong>
+2 tiles away: <strong>32 damage</strong>
+3 tiles away: <strong>16 damage</strong>
+4+ tiles away: <strong>Safe</strong>
+</div>
+Tuznylocas have an aggro range of <strong>5 tiles.</strong> Once they&#39;ve targeted a player, they will attempt to &quot;attack with melee&quot; - although they will never attack, they&#39;ll simply explode when within 2 tiles of <strong>any</strong> player (does not have to be the targeted player).
+
+Before a player comes within its aggro range, they will simply wander slowly  (moving only one tile in a random direction every 6 ticks).</span>
+
+                                <span class="chatlog__edited-timestamp" title="30-Apr-21 07:57 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747522377351180" id="message-837747522377351180">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747522558230578/tuznylocas_explosion.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747522558230578/tuznylocas_explosion.png" alt="Image attachment" title="Image: tuznylocas_explosion.png (25.81 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747596981174352" id="message-837747596981174352">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Indication of the different damage values within the 7x7 explosion, as well as aggro range and explosion trigger range.</em>
+
+
+Tuznylocas will self-detonate on the spot after <strong>75 ticks</strong> (45 seconds). There can be multiple Tuznylocas in the room at once if they are not destroyed quickly.
+
+Note that, because the hands begin to fall more frequently when the Butcher is below 40% HP, Tuznylocas will consequently spawn more frequently as well.
+
+<em>Trivia: &quot;Tuz&quot; means &quot;Fire&quot; in Hungarian.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747624593195038" id="message-837747624593195038">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747624357396570/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747624357396570/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747692054380554" id="message-837747692054380554">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747691890933850/glowing.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747691890933850/glowing.png" alt="Image attachment" title="Image: glowing.png (22.55 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747697879351296" id="message-837747697879351296">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The Butcher&#39;s movement cycle is nearly identical to Bloat&#39;s.
+<div class="quote">He moves at walking speed (1 tile per tick) when <strong>above 60% HP.</strong>
+He begins running (2 tiles per tick) when <strong>below 60% HP.</strong>
+He can turn at any point after 32 ticks of movement.
+He can go down at any point after 39 ticks of movement.
+If he turns, he will add +5 ticks before going down.
+When he goes down, he will remain stationary for 32 ticks (with the stomp attack occurring 30 ticks in).
+</div>
+The only difference is:
+<div class="quote">The Butcher will continue running for the rest of the fight when <strong>below 60% HP.</strong>
+</div><em>(Whereas Bloat can switch speeds when below 40% HP)</em>
+
+However, while he is down, he has three brand new mechanics: <strong>flashing, glowing</strong> and <strong>rebound.</strong>
+
+<img class="emoji " alt="redball" title="redball" src="https://cdn.discordapp.com/emojis/814914303722651670.png"> As soon as the Butcher goes down, a <strong>24-tick</strong> timer starts, which ends 2 ticks before the stomp animation begins.
+<img class="emoji " alt="redball" title="redball" src="https://cdn.discordapp.com/emojis/814914303722651670.png"> This timer is split up into <strong>6 sets of 4-tick cycles.</strong> On the first tick of every cycle, the Butcher will <strong>flash red</strong> to indicate that a new cycle has started. We will call this a &quot;reset.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747733434466306" id="message-837747733434466306">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747733720727602/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747733720727602/unknown.png" alt="Image attachment" title="Image: unknown.png (5.99 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747774846009415" id="message-837747774846009415">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The 24-tick timer, split into 6 sets of 4-tick cycles.</em>
+
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> <strong>If players damage the Butcher for 6% of his total HP or higher in a single cycle, he will glow red for the whole duration of the next cycle.</strong>
+E.g. 5 players must deal 180+ damage within 4 ticks (starting from the reset tick) to trigger a glow.
+
+If players do not attack the Butcher during a glowing cycle, he will stop glowing after the cycle ends and resume sleeping.
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> <strong>If players attack the Butcher <em>at all</em> during a glowing cycle, he will rebound with a powerful attack.</strong>
+
+When a rebound occurs:
+<img class="emoji " alt="redball" title="redball" src="https://cdn.discordapp.com/emojis/814914303722651670.png"> A bright red tint covers all players&#39; screens on the tick which he is attacked on, dealing <strong>30-50</strong> damage to all players.
+<img class="emoji " alt="redball" title="redball" src="https://cdn.discordapp.com/emojis/814914303722651670.png"> The Butcher immediately awakens from his slumber <strong>2 ticks</strong> after being attacked (he begins the stomp animation).
+
+Note that if a rebound is triggered on the very last possible tick of the last cycle, the Butcher will awaken at the same time as usual. Otherwise, he will awaken prematurely, reducing the time window for getting in damage.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747818453401600" id="message-837747818453401600">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747818323771402/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747818323771402/unknown.png" alt="Image attachment" title="Image: unknown.png (33.43 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747850259071047" id="message-837747850259071047">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A potential DPS method for preventing glows and rebounds.</em>
+
+I&#39;m sure much better methods would be invented along the way, but here&#39;s a few <span class="mention" title="JasonT20015#0269">@73 joycowboy</span> and I came up with. Feel free to try making your own!
+<a href="https://docs.google.com/spreadsheets/d/1opc6RWLTnyDKQRmP8i6Tp-mNquUbxT6jFJFT0GDa6Jg/edit?usp=sharing">https://docs.google.com/spreadsheets/d/1opc6RWLTnyDKQRmP8i6Tp-mNquUbxT6jFJFT0GDa6Jg/edit?usp=sharing</a></span>
+
+                        </div>
+                    </div>
+
+
+                    <div class="chatlog__embed">
+                            <div class="chatlog__embed-color-pill chatlog__embed-color-pill--default"></div>
+
+                        <div class="chatlog__embed-content-container">
+                            <div class="chatlog__embed-content">
+                                <div class="chatlog__embed-text">
+
+                                        <div class="chatlog__embed-title">
+                                                <a class="chatlog__embed-title-link" href="https://docs.google.com/spreadsheets/d/1opc6RWLTnyDKQRmP8i6Tp-mNquUbxT6jFJFT0GDa6Jg/edit?usp=sharing">
+                                                    <div class="markdown preserve-whitespace">Bloat Counter</div>
+                                                </a>
+                                        </div>
+
+                                        <div class="chatlog__embed-description">
+                                            <div class="markdown preserve-whitespace">Click boss strat
+
+
+Bloat,Player 1,Player 2,Player 3,Player 4,Player 5,Total Hits,Chance of Glow
+Scythe,Scythe,Scythe,Scythe,Scythe,5,91.15%
+Reset,5,91.15%
+Scythe,Scythe,Scythe,Scythe,Scythe
+Reset,5,91.15%
+Scythe,Scythe,Scythe,Scythe,Scythe
+Reset,5,91.15%
+Scythe,Scythe,Scythe,Scythe,Scythe
+Reset,0,0%</div>
+                                        </div>
+
+                                </div>
+
+                                    <div class="chatlog__embed-thumbnail-container">
+                                        <a class="chatlog__embed-thumbnail-link" href="https://lh5.googleusercontent.com/XIEMHSARKU1HV5855B5P1NV1Wtw37BLWlH8hkHn3Uij8HRyM8aFW-4cWPGRsmCGkabcU0r_88ATwiw=w1200-h630-p">
+                                            <img class="chatlog__embed-thumbnail" src="https://lh5.googleusercontent.com/XIEMHSARKU1HV5855B5P1NV1Wtw37BLWlH8hkHn3Uij8HRyM8aFW-4cWPGRsmCGkabcU0r_88ATwiw=w1200-h630-p" alt="Thumbnail">
+                                        </a>
+                                    </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747864952242258" id="message-837747864952242258">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747864842928128/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747864842928128/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747928680497172" id="message-837747928680497172">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747928549949480/overview.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747928549949480/overview.png" alt="Image attachment" title="Image: overview.png (2.43 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747933276798977" id="message-837747933276798977">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> <strong>90% HP:</strong> Falling flesh attacks begin. A Tuznylocas spawns every fourth set.
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> <strong>80% HP:</strong> Cleaver attacks begin.
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> <strong>60% HP:</strong> The Butcher starts running.
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> <strong>40% HP:</strong> Hands fall at faster intervals. An additional cleaver is fired every attack.
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> If too much damage is dealt to the Butcher at once, he will glow red. If he is attacked while glowing, he will rebound with massive damage and begins moving again prematurely.</span>
+
+                                <span class="chatlog__edited-timestamp" title="30-Apr-21 08:03 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747948183224361" id="message-837747948183224361">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747948397395978/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747948397395978/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837747965904420927" id="message-837747965904420927">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/837746697911140372/837747965858021386/scroll_to_the_top_2.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/837746697911140372/837747965858021386/scroll_to_the_top_2.png" alt="Image attachment" title="Image: scroll_to_the_top_2.png (4.05 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837748270818263072" id="message-837748270818263072">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention">@everyone</span> can we get nylocas</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="wowhai" title="wowhai" src="https://cdn.discordapp.com/emojis/569320359170670592.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 43 message(s)</div>
+</div>
+
+</body>
+
+</html>

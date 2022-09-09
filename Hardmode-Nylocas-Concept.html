@@ -1,0 +1,2311 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>haiyo - hardmode-nylocas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="https://cdn.discordapp.com/icons/561342931986808833/d3d898aa003951dd2d34e0001f902eac.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">haiyo</div>
+        <div class="preamble__entry">Raids 3 / hardmode-nylocas</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/176429696781647873/67e60e0e4209e761369c0a3dfe55ca93.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Hai Yo#0119" data-user-id="176429696781647873" style="color: rgb(218,27,27)">mourns</span>
+
+
+        <span class="chatlog__timestamp">16-May-21 04:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="843497553839783946" id="message-843497553839783946">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843497553672667167/nylocas_hm_title.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843497553672667167/nylocas_hm_title.png" alt="Image attachment" title="Image: nylocas_hm_title.png (3.71 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497567857016872" id="message-843497567857016872">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843497567428804608/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843497567428804608/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497604641062913" id="message-843497604641062913">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">I&#39;ve written this one up a little bit different to the others.
+Instead of going through all of the information with no other context at once, I&#39;ll be providing a short analysis after each segment of the concept. Enjoy :&gt;
+
+<em>Special thanks to <span class="mention" title="DocYen#0451">@DocYen</span> for providing the excel sheet and the general populous of tob-advanced-tactics for fact checking.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="16-May-21 04:56 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="catclap" title="catclap" src="https://cdn.discordapp.com/emojis/736612078030290944.gif">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+            <div class="chatlog__message " data-message-id="843497618587516929" id="message-843497618587516929">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843497618680053760/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843497618680053760/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497671620689927" id="message-843497671620689927">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843497671489880065/nylos_small.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843497671489880065/nylos_small.png" alt="Image attachment" title="Image: nylos_small.png (18.11 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497703178502146" id="message-843497703178502146">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong><u>Nylocas Ischyros</u></strong>
+<strong><u>Nylocas Toxobolos </u></strong>
+<strong><u>Nylocas Hagios</u></strong>
+
+Size: 1x1 (Small)
+
+Levels:
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> 11
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> 200
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> 160 
+<img class="emoji " alt="Defence_icon" title="Defence_icon" src="https://cdn.discordapp.com/emojis/578952175267348480.png"> 1 
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> 1
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> 200 
+
+Aggressive stats:
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> +0
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +1073
+<img class="emoji " alt="Magic_Damage_icon" title="Magic_Damage_icon" src="https://cdn.discordapp.com/emojis/814883839892521050.png"> +928
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+<img class="emoji " alt="Ranged_Strength_icon" title="Ranged_Strength_icon" src="https://cdn.discordapp.com/emojis/814883826370215995.png"> -15
+
+Defensive stats:
+
+<img class="emoji " alt="Stab" title="Stab" src="https://cdn.discordapp.com/emojis/814882474651156542.png"> +0
+<img class="emoji " alt="Slash" title="Slash" src="https://cdn.discordapp.com/emojis/814883885674528828.png"> +0
+<img class="emoji " alt="Crush" title="Crush" src="https://cdn.discordapp.com/emojis/814883871639994399.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+
+ <em>The stats are identical to the level 162 (small) Nylocas.</em>
+<em>Their behavior is identical to normal mode.</em>
+
+<img class="emoji " alt="Poison_hitsplat" title="Poison_hitsplat" src="https://cdn.discordapp.com/emojis/814883807676203048.png"> Immune to poison
+<img class="emoji " alt="Venom_hitsplat" title="Venom_hitsplat" src="https://cdn.discordapp.com/emojis/814883781302419477.png"> Immune to venom</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497716335247360" id="message-843497716335247360">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843497716151484426/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843497716151484426/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497766826147840" id="message-843497766826147840">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843497766570688542/nylos.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843497766570688542/nylos.png" alt="Image attachment" title="Image: nylos.png (1.05 MB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497795054862367" id="message-843497795054862367">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong><u>Nylocas Ischyros</u></strong>
+<strong><u>Nylocas Toxobolos </u></strong>
+<strong><u>Nylocas Hagios</u></strong>
+
+Size: 2x2 (Big)
+
+Levels:
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> 22
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> 250
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> 230 
+<img class="emoji " alt="Defence_icon" title="Defence_icon" src="https://cdn.discordapp.com/emojis/578952175267348480.png"> 20
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> 20
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> 250 
+
+Aggressive stats:
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> +0
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +500
+<img class="emoji " alt="Magic_Damage_icon" title="Magic_Damage_icon" src="https://cdn.discordapp.com/emojis/814883839892521050.png"> +500
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+<img class="emoji " alt="Ranged_Strength_icon" title="Ranged_Strength_icon" src="https://cdn.discordapp.com/emojis/814883826370215995.png"> +0
+
+Defensive stats:
+
+<img class="emoji " alt="Stab" title="Stab" src="https://cdn.discordapp.com/emojis/814882474651156542.png"> +0
+<img class="emoji " alt="Slash" title="Slash" src="https://cdn.discordapp.com/emojis/814883885674528828.png"> +0
+<img class="emoji " alt="Crush" title="Crush" src="https://cdn.discordapp.com/emojis/814883871639994399.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+
+ <em>The stats are identical to the level 260 (Big) Nylocas.</em>
+<em>Their behavior is identical to normal mode.</em>
+
+<img class="emoji " alt="Poison_hitsplat" title="Poison_hitsplat" src="https://cdn.discordapp.com/emojis/814883807676203048.png"> Immune to poison
+<img class="emoji " alt="Venom_hitsplat" title="Venom_hitsplat" src="https://cdn.discordapp.com/emojis/814883781302419477.png"> Immune to venom</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497813153284116" id="message-843497813153284116">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843497813030731796/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843497813030731796/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497872829186078" id="message-843497872829186078">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843497872695885874/matomenos.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843497872695885874/matomenos.png" alt="Image attachment" title="Image: matomenos.png (22.58 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497898880008192" id="message-843497898880008192">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong><u>Nylocas Matomenos</u></strong>
+
+Size: 2x2
+
+Levels:
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> 200 
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> 100
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> 100
+<img class="emoji " alt="Defence_icon" title="Defence_icon" src="https://cdn.discordapp.com/emojis/578952175267348480.png"> 100
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> 100
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> 100
+
+Aggressive stats:
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> +0
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Magic_Damage_icon" title="Magic_Damage_icon" src="https://cdn.discordapp.com/emojis/814883839892521050.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+<img class="emoji " alt="Ranged_Strength_icon" title="Ranged_Strength_icon" src="https://cdn.discordapp.com/emojis/814883826370215995.png"> +0
+
+Defensive stats:
+
+<img class="emoji " alt="Stab" title="Stab" src="https://cdn.discordapp.com/emojis/814882474651156542.png"> +0
+<img class="emoji " alt="Slash" title="Slash" src="https://cdn.discordapp.com/emojis/814883885674528828.png"> +0
+<img class="emoji " alt="Crush" title="Crush" src="https://cdn.discordapp.com/emojis/814883871639994399.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+
+<em>The stats are identical to the Nylocas Matomenos in normal mode.</em>
+
+<img class="emoji " alt="Poison_hitsplat" title="Poison_hitsplat" src="https://cdn.discordapp.com/emojis/814883807676203048.png"> Immune to poison
+<img class="emoji " alt="Venom_hitsplat" title="Venom_hitsplat" src="https://cdn.discordapp.com/emojis/814883781302419477.png"> Immune to venom</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497942005710868" id="message-843497942005710868">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843497941905309706/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843497941905309706/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497946485096458" id="message-843497946485096458">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843497946376568853/nylo_buffer.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843497946376568853/nylo_buffer.png" alt="Image attachment" title="Image: nylo_buffer.png (11.84 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843497969743036466" id="message-843497969743036466">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong><u>Nylocas Oruletos</u></strong>
+
+Size: 1x1
+
+Levels:
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> 11
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> 1
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> 1
+<img class="emoji " alt="Defence_icon" title="Defence_icon" src="https://cdn.discordapp.com/emojis/578952175267348480.png"> 1
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> 1
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> 1
+
+Aggressive stats:
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> +0
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Magic_Damage_icon" title="Magic_Damage_icon" src="https://cdn.discordapp.com/emojis/814883839892521050.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+<img class="emoji " alt="Ranged_Strength_icon" title="Ranged_Strength_icon" src="https://cdn.discordapp.com/emojis/814883826370215995.png"> +0
+
+Defensive stats:
+
+<img class="emoji " alt="Stab" title="Stab" src="https://cdn.discordapp.com/emojis/814882474651156542.png"> +0
+<img class="emoji " alt="Slash" title="Slash" src="https://cdn.discordapp.com/emojis/814883885674528828.png"> +0
+<img class="emoji " alt="Crush" title="Crush" src="https://cdn.discordapp.com/emojis/814883871639994399.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+
+<img class="emoji " alt="Poison_hitsplat" title="Poison_hitsplat" src="https://cdn.discordapp.com/emojis/814883807676203048.png"> Immune to poison
+<img class="emoji " alt="Venom_hitsplat" title="Venom_hitsplat" src="https://cdn.discordapp.com/emojis/814883781302419477.png"> Immune to venom
+
+<strong>Special Interactions:</strong>
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> Can be damaged with any attack style.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498014797725726" id="message-843498014797725726">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498014705582080/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498014705582080/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498020004036629" id="message-843498020004036629">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498019830759434/nylo_bomber.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498019830759434/nylo_bomber.png" alt="Image attachment" title="Image: nylo_bomber.png (40.09 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="Nylomite" title="Nylomite" src="https://cdn.discordapp.com/emojis/753270773837332591.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+            <div class="chatlog__message " data-message-id="843498040618385438" id="message-843498040618385438">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong><u>Nylocas Dynamenos</u></strong>
+
+Size: 2x2
+
+Levels:
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> 66
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> 1
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> 1
+<img class="emoji " alt="Defence_icon" title="Defence_icon" src="https://cdn.discordapp.com/emojis/578952175267348480.png"> 20
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> 20
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> 1
+
+Aggressive stats:
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> +0
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Magic_Damage_icon" title="Magic_Damage_icon" src="https://cdn.discordapp.com/emojis/814883839892521050.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+<img class="emoji " alt="Ranged_Strength_icon" title="Ranged_Strength_icon" src="https://cdn.discordapp.com/emojis/814883826370215995.png"> +0
+
+Defensive stats:
+
+<img class="emoji " alt="Stab" title="Stab" src="https://cdn.discordapp.com/emojis/814882474651156542.png"> +0
+<img class="emoji " alt="Slash" title="Slash" src="https://cdn.discordapp.com/emojis/814883885674528828.png"> +0
+<img class="emoji " alt="Crush" title="Crush" src="https://cdn.discordapp.com/emojis/814883871639994399.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+
+<img class="emoji " alt="Poison_hitsplat" title="Poison_hitsplat" src="https://cdn.discordapp.com/emojis/814883807676203048.png"> Immune to poison
+<img class="emoji " alt="Venom_hitsplat" title="Venom_hitsplat" src="https://cdn.discordapp.com/emojis/814883781302419477.png"> Immune to venom
+
+<strong>Special Interactions:</strong>
+
+<img class="emoji " alt="Ice_Barrage" title="Ice_Barrage" src="https://cdn.discordapp.com/emojis/795443226088833084.png"> Immune to rooting spells.
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> Can be damaged with any attack style.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498092203999252" id="message-843498092203999252">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498088437776405/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498088437776405/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498096611688528" id="message-843498096611688528">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498096477863956/250px-Nylocas_Ischyros.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498096477863956/250px-Nylocas_Ischyros.png" alt="Image attachment" title="Image: 250px-Nylocas_Ischyros.png (50.83 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498183987822622" id="message-843498183987822622">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong><u>Vadnylocas Vasilias</u></strong>
+
+Size: 4x4
+
+Levels:
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> 3,000 <strong>(1.2x normal)</strong>
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> 400
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> 350
+<img class="emoji " alt="Defence_icon" title="Defence_icon" src="https://cdn.discordapp.com/emojis/578952175267348480.png"> 50
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> 50
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> 350
+
+Aggressive stats:
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> +0
+<img class="emoji " alt="Strength_icon" title="Strength_icon" src="https://cdn.discordapp.com/emojis/603273685658501131.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +600
+<img class="emoji " alt="Magic_Damage_icon" title="Magic_Damage_icon" src="https://cdn.discordapp.com/emojis/814883839892521050.png"> +600
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+<img class="emoji " alt="Ranged_Strength_icon" title="Ranged_Strength_icon" src="https://cdn.discordapp.com/emojis/814883826370215995.png"> +0
+
+Defensive stats:
+
+<img class="emoji " alt="Stab" title="Stab" src="https://cdn.discordapp.com/emojis/814882474651156542.png"> +0
+<img class="emoji " alt="Slash" title="Slash" src="https://cdn.discordapp.com/emojis/814883885674528828.png"> +0
+<img class="emoji " alt="Crush" title="Crush" src="https://cdn.discordapp.com/emojis/814883871639994399.png"> +0
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> +0
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png"> +0
+
+<img class="emoji " alt="Poison_hitsplat" title="Poison_hitsplat" src="https://cdn.discordapp.com/emojis/814883807676203048.png"> Immune to poison
+<img class="emoji " alt="Venom_hitsplat" title="Venom_hitsplat" src="https://cdn.discordapp.com/emojis/814883781302419477.png"> Immune to venom
+
+<em>Unless stated otherwise, the stats are identical to Nylocas Vasilias.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="16-May-21 05:00 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498222466891783" id="message-843498222466891783">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498222353907742/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498222353907742/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498227088752650" id="message-843498227088752650">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Most of the enemies are exactly the same as the ones found in regular mode. They don&#39;t need more HP because you&#39;re still meant to deal with them quickly.
+In addition, pillar HP hasn&#39;t been touched at all. The sheer amount of nylos in here compared to normal mode should be enough to make them tougher to protect.
+I&#39;ve introduced 2 new types of Nylos, and for simplicity&#39;s sake we&#39;ll refer to them as <strong>buffers</strong> (Nylocas Oruletos) and <strong>bombers</strong> (Nylocas Dynamenos).</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498241056178186" id="message-843498241056178186">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498240909115433/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498240909115433/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498306922741800" id="message-843498306922741800">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498306617212938/wave_layout.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498306617212938/wave_layout.png" alt="Image attachment" title="Image: wave_layout.png (5.25 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498334252433418" id="message-843498334252433418">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The hard mode wave layout is inspired by, but fundamentally different from the regular mode layout.
+
+Functionally, it works identically to regular mode.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> There is a 4-tick cycle that is constantly present throughout the waves.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> A wave spawns at the start of this cycle (sometimes there are empty cycles where no waves spawn).
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> If there are too many nylocas inside the room (surpassing the cap) when a new wave is meant to spawn, it will be staggered until the number of nylos in the room is beneath the cap.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> When the last nylocas dies, there is a 22-tick pause before the boss spawns.
+
+In addition, mechanical aspects of the nylocas (aggro range, explosion timer, attack speed, etc.) that we&#39;re already familiar with (melee/range/mage, smalls and bigs) are identical.
+I will cover the buffers and bombers when they appear in the waves.
+
+<strong><u>Key Differences:</u></strong>
+
+<img class="emoji " alt="void" title="void" src="https://cdn.discordapp.com/emojis/814979232933347388.png"> There are <strong>42 waves,</strong> instead of 31.
+<img class="emoji " alt="void" title="void" src="https://cdn.discordapp.com/emojis/814979232933347388.png"> There are <strong>~280 total nylos,</strong> instead of ~200.
+<img class="emoji " alt="void" title="void" src="https://cdn.discordapp.com/emojis/814979232933347388.png"> The waves are roughly <strong>24 seconds longer.</strong> Although there are quite a few more waves, there are also fewer empty cycles. This means more nylos to deal with in a short period of time.
+<img class="emoji " alt="void" title="void" src="https://cdn.discordapp.com/emojis/814979232933347388.png"> The nylo cap has been changed to <strong>20 and 40</strong> rather than 12 and 24. This is necessary for the amount of nylos that will be coming in. The wave on which the cap increases is also different.
+
+<strong><u>Full Wave Chart:</u></strong>
+<a href="https://docs.google.com/spreadsheets/d/1eTj9XnFqDd-eu9YpN19HPaMXxYm56VCmgVncdI7t-dE/edit?usp=sharing">https://docs.google.com/spreadsheets/d/1eTj9XnFqDd-eu9YpN19HPaMXxYm56VCmgVncdI7t-dE/edit?usp=sharing</a></span>
+
+                        </div>
+                    </div>
+
+
+                    <div class="chatlog__embed">
+                            <div class="chatlog__embed-color-pill chatlog__embed-color-pill--default"></div>
+
+                        <div class="chatlog__embed-content-container">
+                            <div class="chatlog__embed-content">
+                                <div class="chatlog__embed-text">
+
+                                        <div class="chatlog__embed-title">
+                                                <a class="chatlog__embed-title-link" href="https://docs.google.com/spreadsheets/d/1eTj9XnFqDd-eu9YpN19HPaMXxYm56VCmgVncdI7t-dE/edit?usp=sharing">
+                                                    <div class="markdown preserve-whitespace">CM Nylos Concept</div>
+                                                </a>
+                                        </div>
+
+                                        <div class="chatlog__embed-description">
+                                            <div class="markdown preserve-whitespace">cm nylo
+
+
+EAST,SOUTH,WEST,NOTES,KEY
+North,South,East,West,North,South
+1,melee,mage,range,Cap: 20,BIG
+2,range,melee,mage,Aggressive
+3,mage,range,melee,flashing-styles,9
+mage
+4,MELEE,MAGE,MAGE,melee
+5,melee,RANGE,mage,MAGE,range,MELEE,range,30
+chains
+buffers
+6,range,range,mage,mage,melee,melee,Nylo...</div>
+                                        </div>
+
+                                </div>
+
+                                    <div class="chatlog__embed-thumbnail-container">
+                                        <a class="chatlog__embed-thumbnail-link" href="https://lh4.googleusercontent.com/kK-pVK44f6vO56PZYEkEKAnUR0lFxnXQF7O8_1b1-Qud3vxJ8pnBOERSmKB0nNDlDuqUOv4Qwlt9vg=w1200-h630-p">
+                                            <img class="chatlog__embed-thumbnail" src="https://lh4.googleusercontent.com/kK-pVK44f6vO56PZYEkEKAnUR0lFxnXQF7O8_1b1-Qud3vxJ8pnBOERSmKB0nNDlDuqUOv4Qwlt9vg=w1200-h630-p" alt="Thumbnail">
+                                        </a>
+                                    </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498411239276554" id="message-843498411239276554">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Next I&#39;ll be covering the individual &quot;segments&quot; of the waves as well as introducing new mechanics and nylos.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498425290719232" id="message-843498425290719232">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498425072091176/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498425072091176/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498481578016809" id="message-843498481578016809">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498481729273866/p1_intro.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498481729273866/p1_intro.png" alt="Image attachment" title="Image: p1_intro.png (3.71 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498490743095297" id="message-843498490743095297">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498490771275776/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498490771275776/unknown.png" alt="Image attachment" title="Image: unknown.png (22.68 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498517195391016" id="message-843498517195391016">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Waves 1-5</strong>
+
+The introduction to what&#39;s about to come. It starts almost identically to normal mode Nylocas, but with more aggressive variants. 
+Big nylos also make their first appearance earlier on.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498545218846750" id="message-843498545218846750">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498545066672198/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498545066672198/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498602634674237" id="message-843498602634674237">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498602667442176/p2_chains.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498602667442176/p2_chains.png" alt="Image attachment" title="Image: p2_chains.png (3.61 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498645176975400" id="message-843498645176975400">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498645063335976/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498645063335976/unknown.png" alt="Image attachment" title="Image: unknown.png (28.03 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498668702564414" id="message-843498668702564414">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Waves 6-12</strong>
+
+<em>There is a 2-cycle gap between the last of the &quot;intro&quot; waves and the first chain wave. This is to allow the players to clear everything out just before they start spawning because there&#39;s a ton of nylos about to come in.</em>
+
+<strong>Chains</strong> are predictable, but not exact spawns of double small nylo waves that come in quick succession. 
+There are three sets of chains across the wave layout, and this is its first appearance.
+
+<strong>Rather than being the exact same spawns every time, chains will force players to adapt to situations.</strong> They are not completely random so it&#39;s not just a guessing game.
+Each set of nylos will either be same-colored, or two different colors.
+
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> If same-colored, the next wave must necessarily be one nylo of the previous color + one of the other two colors, at random (the previous colored nylo will always be the unaggressive one).
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> If they are different colors, the next wave must necessarily be a double of the same color of one of the two colors, at random.
+
+<strong><u>List of Possible Chains:</u></strong>
+
+<strong>Key:</strong>
+<img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> Melee
+<img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> Range
+<img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> Mage</span>
+
+                                <span class="chatlog__edited-timestamp" title="16-May-21 05:04 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498697206661130" id="message-843498697206661130">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">------------
+
+<img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> ---&gt; <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> or <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> 
+<img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> ---&gt; <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> or <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> 
+<img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> ---&gt; <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> or <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> 
+<img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> ---&gt; <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> or <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> 
+<img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> ---&gt; <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> or <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> 
+<img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> ---&gt; <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> or <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png">
+
+<em>There are also variations where the unaggressive and aggressive nylos swap positions that are not listed, but you get the idea.</em>
+
+Here&#39;s an example of what a set of chain waves might look like:</span>
+
+                                <span class="chatlog__edited-timestamp" title="16-May-21 04:43 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498776924651520" id="message-843498776924651520">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498776718868510/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498776718868510/unknown.png" alt="Image attachment" title="Image: unknown.png (24.96 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498936459460618" id="message-843498936459460618">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Flashing nylos (the ones that change colors while travelling down the webs) are also introduced here.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843498949633638420" id="message-843498949633638420">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843498949498634260/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843498949498634260/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499010185887755" id="message-843499010185887755">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499009633157140/p3_buffers.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499009633157140/p3_buffers.png" alt="Image attachment" title="Image: p3_buffers.png (4.3 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499017518055445" id="message-843499017518055445">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499017212264448/nylo_buffer.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499017212264448/nylo_buffer.png" alt="Image attachment" title="Image: nylo_buffer.png (11.84 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499042394865706" id="message-843499042394865706">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Nylocas Oruletos</strong> (buffer) is a new type of Nylocas. Only the small variants (1x1) exist.
+
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> They do not attack players nor pillars. Instead, they passively wander around the room.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> Their explosion timer is <strong>26 ticks</strong> (this is half of every other nylo, which is 52).
+
+<strong>If this Nylocas is killed, all Nylocas within a 7x7 area of it will go into a Frenzy.</strong>
+
+A Frenzy will cause the Nylocas to attack every <strong>2 ticks</strong> (rather than 3). In addition, <strong>pillar-focused Nylocas become aggressive to players.</strong>
+<em>Note that natural death by explosion will not trigger a frenzy upon death.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499096039489537" id="message-843499096039489537">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499096295079966/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499096295079966/unknown.png" alt="Image attachment" title="Image: unknown.png (22.52 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499119003566121" id="message-843499119003566121">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Waves 13-17</strong>
+
+These waves serve to introduce the buffers. Following the many waves of double nylos, and the smalls that spawn from the bigs, the buffers can serve as a rescue party for getting nylos off of pillars. They can also be a disaster and kill your entire team if the frenzy gets too many nylos.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499131397210143" id="message-843499131397210143">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499131263254538/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499131263254538/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499177677422653" id="message-843499177677422653">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499177555656714/p4_webs.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499177555656714/p4_webs.png" alt="Image attachment" title="Image: p4_webs.png (3.38 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499188728627253" id="message-843499188728627253">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>After wave 17, webs will periodically fall onto the arena.</strong></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499240127070219" id="message-843499240127070219">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499240096268288/150px-Web.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499240096268288/150px-Web.png" alt="Image attachment" title="Image: 150px-Web.png (37.4 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499268329308190" id="message-843499268329308190">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> Webs are 1x1 entities which behave very similarly to the webs at Verzik Phase 3.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> <strong>8 webs</strong> will fall onto random tiles of the room every <strong>24 ticks.</strong>
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> These have a <strong>4 tick indicator</strong> before landing and becoming hazardous.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> The webs then remain on the floor for <strong>12 ticks.</strong>
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> Players who step onto a web will be rendered unable to move and attack until the web snaps or is destroyed.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> Players can attack webs to destroy them. They have <strong>6 HP</strong> and no defensive bonuses. 
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> If a player is stuck on a web, <strong>6 ticks</strong> will be added to its lifetime if it would otherwise have snapped before then. 
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> The webs deal <strong>25-35 damage</strong> to players caught in them when they snap.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499287602004049" id="message-843499287602004049">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499287459266582/nylo_webs.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499287459266582/nylo_webs.png" alt="Image attachment" title="Image: nylo_webs.png (6.8 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499317402402846" id="message-843499317402402846">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Example of a web attack layout.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499354660012052" id="message-843499354660012052">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499354467860480/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499354467860480/unknown.png" alt="Image attachment" title="Image: unknown.png (33.45 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499392917176371" id="message-843499392917176371">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Waves 18-25</strong>
+
+A generous 3-cycle gap is given when webs start falling.
+Afterwards, another cycle of chain nylos is introduced. These will include <strong>flashing</strong> chains.
+
+Flashing colors for chains are predictable:
+
+<img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> &gt; <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> &gt; <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> &gt; Loop
+
+<strong>The chain is always based off of the first set of colors.</strong>
+As with other flashing nylos, they will flash twice while travelling down the web.
+
+<em>Example:</em>
+
+First color:<img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> 
+Second color: <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> 
+Third and final color: <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> <img class="emoji " alt="blueball" title="blueball" src="https://cdn.discordapp.com/emojis/814914345808298010.png"> 
+
+Next chain&#39;s first color: <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> <img class="emoji " alt="greenball" title="greenball" src="https://cdn.discordapp.com/emojis/814914332928114748.png"> or <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> <img class="emoji " alt="whiteball" title="whiteball" src="https://cdn.discordapp.com/emojis/814914277726748685.png"> (based off of the first color of the previous)
+
+<strong>The cap is also increased to 40 at wave 23.</strong>
+This is to account for the massive influx of new nylos coming in. Buffers are also periodically introduced to help(?) with pillar control.
+This segment of the waves is probably one of the steepest learning curves - introducing webs while handling with a large amount of flashing nylo chains.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499410351456336" id="message-843499410351456336">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499410229952542/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499410229952542/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499455206522880" id="message-843499455206522880">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499455046352936/p5_buildup.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499455046352936/p5_buildup.png" alt="Image attachment" title="Image: p5_buildup.png (3.33 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499460575494154" id="message-843499460575494154">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499460444684328/nylo_bomber.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499460444684328/nylo_bomber.png" alt="Image attachment" title="Image: nylo_bomber.png (40.09 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499489818181642" id="message-843499489818181642">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Nylocas Dynamenos</strong> (bomber) is a new type of Nylocas. Only the big variants (2x2) exist.
+
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> Upon spawning, they will <em>run</em> towards the center of the room (moving at 2 tiles per tick speed).
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> If they successfully reach the center, they will pause for 1 tick before self-detonating into a massive explosion that damages all players in the room.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> The explosion deals reduced damage further away from the center.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> The path from spawn to center takes <strong>8 ticks.</strong> As they cannot be frozen, destroying them quickly is the only way to prevent them from exploding.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> Despite being a &quot;big nylo,&quot; they do <strong>not</strong> spawn small nylos upon death.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499525028315136" id="message-843499525028315136">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499524895014932/nylocas_explosion_range.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499524895014932/nylocas_explosion_range.png" alt="Image attachment" title="Image: nylocas_explosion_range.png (36.19 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499547216707604" id="message-843499547216707604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Explosion Damage:</strong>
+
+<div class="quote">0-1 tiles away from center: 70-90
+2-3 tiles away from center: 50-70
+4-5 tiles away from center: 30-50</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499608143167528" id="message-843499608143167528">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499607970676776/nylo-explosion-gif.gif">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499607970676776/nylo-explosion-gif.gif" alt="Image attachment" title="Image: nylo-explosion-gif.gif (17.48 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499616557072424" id="message-843499616557072424">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Visual representation of a bomber spawning and attempting to blow up the raid.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499638283960400" id="message-843499638283960400">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><a href="https://tenor.com/view/helms-deep-explosion-lord-of-the-rings-gif-14561803">https://tenor.com/view/helms-deep-explosion-lord-of-the-rings-gif-14561803</a></span>
+
+                        </div>
+                    </div>
+
+
+                    <div class="chatlog__embed">
+                            <div class="chatlog__embed-color-pill chatlog__embed-color-pill--default"></div>
+
+                        <div class="chatlog__embed-content-container">
+                            <div class="chatlog__embed-content">
+                                <div class="chatlog__embed-text">
+
+
+
+                                </div>
+
+                                    <div class="chatlog__embed-thumbnail-container">
+                                        <a class="chatlog__embed-thumbnail-link" href="https://media.tenor.co/images/e183f14e73f5c896e5574029521e9dc1/tenor.png">
+                                            <img class="chatlog__embed-thumbnail" src="https://media.tenor.co/images/e183f14e73f5c896e5574029521e9dc1/tenor.png" alt="Thumbnail">
+                                        </a>
+                                    </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499661355384843" id="message-843499661355384843">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">^ when you roll three 0s in a row on it</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499677915414528" id="message-843499677915414528">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499677730340904/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499677730340904/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499718339330048" id="message-843499718339330048">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499718239977492/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499718239977492/unknown.png" alt="Image attachment" title="Image: unknown.png (24.88 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499937756348427" id="message-843499937756348427">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Wave 26</strong> is the first wave to introduce a bomber. This always spawns on the south lane.
+
+From this point onwards, all waves with big nylos have a chance of spawning a bomber in place of a big nylo.
+
+This chance increases the more waves that pass without one spawning:
+<div class="quote"><strong>First wave after a bomber spawn:</strong> 10% chance
+<strong>Second wave after a bomber spawn:</strong> 30% chance
+<strong>Third wave after a bomber spawn:</strong> 70% chance
+<strong>Fourth wave after a bomber spawn:</strong> Guaranteed bomber
+</div>(The chance resets each time a bomber spawns)
+
+Only <strong>one</strong> bomber nylo can spawn per wave. The lane it spawns from (and subsequently, the nylo it replaces) is random.
+
+Specifically, the waves on which a Bomber can spawn are:
+
+<div class="quote">26 (guaranteed)
+27
+28
+29
+31
+33
+35
+37
+39
+42 (guaranteed)
+</div>Note that at least 4 bombers are guaranteed in any given raid, due to 2 guaranteed spawns and the fourth wave rule.
+
+
+<strong>Waves 26-29</strong> serve as both an introduction to the bomber and a build-up to the finale of the waves.
+There are two 2-cycle gaps to allow players a moment to prepare themselves for the coming onslaught.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843499985551097879" id="message-843499985551097879">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843499985823203360/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843499985823203360/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500173904052235" id="message-843500173904052235">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843500173799456818/p6_climax.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843500173799456818/p6_climax.png" alt="Image attachment" title="Image: p6_climax.png (4.24 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500179876741120" id="message-843500179876741120">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843500179743440936/unknown.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843500179743440936/unknown.png" alt="Image attachment" title="Image: unknown.png (49 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500207625994290" id="message-843500207625994290">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Waves 30-42</strong>
+
+The finale of the waves, incorporating all previous segments of the fight together.
+Most of the nylo spawns are not aggressive to players. A generous amount of buffers are spawned to protect the pillars more effectively - as long as players can survive that.
+There are also continuous web spawns to handle as well as the task of keeping up with multiple flashing nylo chains. There are many opportunities for chinning/barraging if players are able to capitalize on them. 
+And of course, the looming threat of a bomber every other wave helps build up the tension.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500220419276811" id="message-843500220419276811">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843500220326477824/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843500220326477824/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500232288239666" id="message-843500232288239666">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843500232128987186/boss.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843500232128987186/boss.png" alt="Image attachment" title="Image: boss.png (2.19 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500250782105652" id="message-843500250782105652">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843500250626654218/250px-Nylocas_Ischyros.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843500250626654218/250px-Nylocas_Ischyros.png" alt="Image attachment" title="Image: 250px-Nylocas_Ischyros.png (50.83 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500318737039370" id="message-843500318737039370">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="⚠" title="⚠" src="https://twemoji.maxcdn.com/2/72x72/26a0.png">️ <strong>NOTE:</strong> The webs during the waves will stop spawning when the last nylo in the waves dies. 
+
+
+Functionally, the fight is the same. The boss chooses a style for 10 ticks, does two attacks 4 ticks apart, and switches to another style at random.
+
+Vadnylocas Vasilias has identical stats to its regular mode counterpart. 
+However, although his base damage does not change, <strong>the damage reduced by protection prayers does.</strong>
+
+Each of his attack styles have a special mechanic which determines the amount of damage players will take.
+
+
+<img class="emoji " alt="Attack_icon1" title="Attack_icon1" src="https://cdn.discordapp.com/emojis/814883861111898112.png"> <strong><u>Melee</u></strong>
+
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> Attacks launch a web at each player&#39;s tile.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> The web travels for <strong>3 ticks</strong> before landing and becoming hazardous. Like the ones in the waves, they remain on the ground for <strong>12 ticks.</strong>
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> If multiple players are standing on one tile, only one web will be launched to that tile (similarly to crystals spawning at Olm).
+<img class="emoji " alt="Protect_from_Melee" title="Protect_from_Melee" src="https://cdn.discordapp.com/emojis/564806044186836992.png">  Identically to normal mode, Protect from Melee completely negates damage from its attacks.
+
+<img class="emoji " alt="Ranged_icon" title="Ranged_icon" src="https://cdn.discordapp.com/emojis/572917979772092436.png">  <strong><u>Ranged</u></strong>
+
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> Attacks will spread to all players within a <strong>5x5</strong> range (up to 2 tiles away) of the primary target.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> If an attack hits more than one player, Protect from Missiles will only reduce damage by <strong>50%</strong> (max hit of 35).
+<img class="emoji " alt="Protect_from_Missiles" title="Protect_from_Missiles" src="https://cdn.discordapp.com/emojis/564806054345572363.png"> If an attack only hits the primary target, Protect from Missiles will reduce its damage by <strong>75%</strong> (identically to normal mode).
+
+
+<img class="emoji " alt="Magic_icon" title="Magic_icon" src="https://cdn.discordapp.com/emojis/572917998919090187.png"> <strong><u>Magic</u></strong>
+
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> Protection prayer reduces more damage based on distance away from the boss:
+<div class="quote">0-1 tiles away: <strong>20%</strong> (max hit of 56)
+2 tiles away: <strong>40%</strong> (max hit of 42)
+3 tiles away: <strong>60%</strong> (max hit of 28)
+4+ tiles away: <strong>80%</strong> (max hit of 14)</div></span>
+
+                                <span class="chatlog__edited-timestamp" title="16-May-21 05:19 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500377009291264" id="message-843500377009291264">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843500376895651860/matomenos.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843500376895651860/matomenos.png" alt="Image attachment" title="Image: matomenos.png (22.58 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500408834883604" id="message-843500408834883604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> <strong>At 60% HP, a Nylocas Matomenos will spawn from each lane</strong> (3 total).
+
+These behave identically to the ones found in Maiden. They will spawn and attempt to walk into the boss, healing it for <strong>2x</strong> their remaining Hitpoints (though they do not increase the boss&#39; damage).
+
+<img class="emoji " alt="Hitpoints_icon" title="Hitpoints_icon" src="https://cdn.discordapp.com/emojis/814798250355064942.png"> <strong>At 30% HP, another set of Nylocas Matomenos spawns, and Vadnylocas Vasilias&#39; attack cycle is sped up.</strong>
+
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> His two attacks will be <strong>3 ticks</strong> apart, instead of 4.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> The time in between his last attack and the next color switch is reduced by <strong>1 tick.</strong>
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> This means he will switch colors every <strong>8 ticks,</strong> instead of 10.
+
+(Keep in mind that the reaction time in between switching colors and attacking remains the same).</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500471217815562" id="message-843500471217815562">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843500471096049664/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843500471096049664/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500506093322241" id="message-843500506093322241">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843500506012975144/overview.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843500506012975144/overview.png" alt="Image attachment" title="Image: overview.png (2.43 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500512589512726" id="message-843500512589512726">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> The waves are about 20 seconds longer.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> The waves will not be exactly the same every time (though most spawns will remain fixed).
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> There are dangerous web tiles to watch out for for the majority of the battle.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> There are new buffer nylos that are a double-edged sword - they can help you protect pillars, but they can also rinse your brews or stack you out.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> There are new bomber nylos that force players to stop what they&#39;re doing and immediately focus all they have into killing it.
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> The boss has new mechanics that encourage players to not only take into account their prayers and gear, but where they&#39;re standing as well. 
+<img class="emoji " alt="exalt" title="exalt" src="https://cdn.discordapp.com/emojis/795325137637474365.png"> Healers and increased attack speed are introduced at the boss to give the fight a sense of progression.</span>
+
+                                <span class="chatlog__edited-timestamp" title="16-May-21 05:25 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500527051603998" id="message-843500527051603998">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843500526905589790/wdr_line_gold.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843500526905589790/wdr_line_gold.jpg" alt="Image attachment" title="Image: wdr_line_gold.jpg (2.12 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843500541111828510" id="message-843500541111828510">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="https://cdn.discordapp.com/attachments/843497474177368104/843500540973154354/scroll_to_the_top_2.png">
+                                        <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/843497474177368104/843500540973154354/scroll_to_the_top_2.png" alt="Image attachment" title="Image: scroll_to_the_top_2.png (4.05 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="843502189305528350" id="message-843502189305528350">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention">@everyone</span> probably the toughest one so far! enjoy <img class="emoji " alt="love" title="love" src="https://cdn.discordapp.com/emojis/739771418576814141.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="FeelsMeowken" title="FeelsMeowken" src="https://cdn.discordapp.com/emojis/662836632520491022.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="Fatblish" title="Fatblish" src="https://cdn.discordapp.com/emojis/634102405147000842.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="cogumeowlo" title="cogumeowlo" src="https://cdn.discordapp.com/emojis/759825524330594324.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="monkaNylo" title="monkaNylo" src="https://cdn.discordapp.com/emojis/589790303922290689.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 82 message(s)</div>
+</div>
+
+</body>
+
+</html>
